@@ -55,4 +55,4 @@ This image is currently in the early stages of development. If you need to chang
 
 - ## **Issues**
 
-There may be a lot of issues of this image, so please feel free to give me feedback on [Github](https://github.com/jinkstao/docker-ranzhi).
+There may be a lot of issues on this image, so please feel free to give me feedback on [Github](https://github.com/jinkstao/docker-ranzhi).
