@@ -1,0 +1,16 @@
+version: '2'
+services:
+        ranzhi:
+                image: 'snowind/ranzhi:new2'
+                container_name: ranzhi-server
+                restart: always
+                ports:
+                        - "80:80"
+                        - "3306:3306"
+                volumes:
+                        - /home/ranzhi/service:/home/ranzhi
+                        - /home/ranzhi/mysql:/var/lib/mysql
+                environment:
+                        - MYSQL_ADMIN_USER=taojun
+                        - MYSQL_ADMIN_PASS=123456
+
