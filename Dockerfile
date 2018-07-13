@@ -8,6 +8,8 @@ ARG XUANXUAN_URL=http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.ranzhi.1.6.0.zip
 
 ENV MYSQL_HOME=/var/lib/mysql
 ENV MYSQL_TEMP=/tmp/mysql
+ENV MYSQL_ADMIN_USER=admin
+ENV MYSQL_ADMIN_PASS=admin888
 
 # install apache2 mysql php
 RUN apt-get update && \

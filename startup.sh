@@ -1,21 +1,18 @@
 #!/bin/bash
 
-RANZHI_FILE="/tmp/ranzhi.zip"
-ZENTAO_FILE="/tmp/zentao.zip"
-XUANXUAN_FILE="/tmp/xuanxuan.zip"
-WWW_HOME="/home"
-MYSQL_INIT="/tmp/init.sql"
+RANZHI_FILE=/tmp/ranzhi.zip
+ZENTAO_FILE=/tmp/zentao.zip
+XUANXUAN_FILE=/tmp/xuanxuan.zip
+WWW_HOME=/home
+RANZHI_FLAG_FILE=$WWW_HOME/ranzhi/.flag
+MYSQL_INIT=/tmp/init.sql
+MYSQL_FLAG_FILE=$MYSQL_HOME/.flag
+FLAG_INFO="This file is only used to start the script recognition service is installed, please do not delete."
 
 # Config MySQL
-if [ ! -n "$MYSQL_ADMIN_USER" ]; then
-    MYSQL_ADMIN_USER=admin
-fi
-if [ ! -n "$MYSQL_ADMIN_PASS" ]; then
-    MYSQL_ADMIN_PASS=admin888
-fi
-if [ -d "$MYSQL_TEMP" ]; then
+if [ ! -f "$MYSQL_FLAG_FILE" ]; then
     echo "config MySQL..."
-    mv $MYSQL_TEMP/* $MYSQL_HOME
+    mv -o $MYSQL_TEMP/* $MYSQL_HOME
     rm -rf $MYSQL_TEMP
     chown -R mysql:mysql $MYSQL_HOME
     service mysql start
@@ -30,38 +27,27 @@ if [ -d "$MYSQL_TEMP" ]; then
     echo "CREATE DATABASE zentao;" >> $MYSQL_INIT
     # Execute SQL
     mysql -uroot < $MYSQL_INIT
+    echo $FLAG_INFO > $MYSQL_FLAG_FILE
     echo "config MySQL...done!"
 fi
 
 service mysql restart
 
-if [ -f "$RANZHI_FILE" ]; then
+if [ ! -f "$RANZHI_FLAG_FILE" ]; then
     # unzip ranzhi
     echo "unzip ranzhi package..."
     unzip -q -o $RANZHI_FILE -d $WWW_HOME/
     echo "unzip ranzhi package...done!"
-    echo "remove ranzhi zip file..."
-    rm $RANZHI_FILE
-    echo "remove ranzhi zip file...done!"
-    if [ -f "$ZENTAO_FILE" ]; then
-        # unzip zentao
-        echo "unzip ranzhi package..."
-        unzip -q -o $ZENTAO_FILE -d $WWW_HOME/ranzhi/app/
-        mv $WWW_HOME/ranzhi/app/zentaopms $WWW_HOME/ranzhi/app/zentao
-        echo "unzip zentao package...done!"
-        echo "remove zantao zip file..."
-        rm $ZENTAO_FILE
-        echo "remove zentao zip file...done!"
-        if [ -f "$XUANXUAN_FILE" ]; then
-            #unzip xuanxuan
-            echo "unzip xuanxuan package..."
-            unzip -q -o $XUANXUAN_FILE -d $WWW_HOME/ranzhi/
-            echo "unzip xuanxuan package...done!"
-            echo "remove xuanxuan zip file..."
-            rm $XUANXUAN_FILE
-            echo "remove xuanxuan zip file...done!"
-        fi
-    fi
+    # unzip zentao
+    echo "unzip ranzhi package..."
+    unzip -q -o $ZENTAO_FILE -d $WWW_HOME/ranzhi/app/
+    mv $WWW_HOME/ranzhi/app/zentaopms $WWW_HOME/ranzhi/app/zentao
+    echo "unzip zentao package...done!"
+    #unzip xuanxuan
+    echo "unzip xuanxuan package..."
+    unzip -q -o $XUANXUAN_FILE -d $WWW_HOME/ranzhi/
+    echo "unzip xuanxuan package...done!"
+    echo $FLAG_INFO > $RANZHI_FLAG_FILE
 fi
 
 # Start apache2
