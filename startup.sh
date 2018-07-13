@@ -3,7 +3,7 @@
 RANZHI_FILE=/tmp/ranzhi.zip
 ZENTAO_FILE=/tmp/zentao.zip
 XUANXUAN_FILE=/tmp/xuanxuan.zip
-WWW_HOME=/home
+WWW_HOME=/var
 RANZHI_FLAG_FILE=$WWW_HOME/ranzhi/.flag
 MYSQL_INIT=/tmp/init.sql
 MYSQL_FLAG_FILE=$MYSQL_HOME/.flag
