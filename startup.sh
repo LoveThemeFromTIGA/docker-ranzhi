@@ -12,7 +12,7 @@ FLAG_INFO="This file is only used to start the script recognition service is ins
 # Config MySQL
 if [ ! -f "$MYSQL_FLAG_FILE" ]; then
     echo "config MySQL..."
-    mv -o $MYSQL_TEMP/* $MYSQL_HOME
+    mv -f $MYSQL_TEMP/* $MYSQL_HOME
     rm -rf $MYSQL_TEMP
     chown -R mysql:mysql $MYSQL_HOME
     service mysql start
