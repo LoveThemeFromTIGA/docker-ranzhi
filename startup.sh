@@ -34,7 +34,7 @@ service mysql restart
 # config apache2
 if [ ! -f "$RANZHI_FLAG_FILE" ]; then
     echo "config apache2..."
-    if [ "$IS_HTTPS"="YES" ]; then
+    if [ "$IS_HTTPS" = "YES" ]; then
         mv -f /tmp/https-000-default.conf /etc/apache2/sites-enabled/000-default.conf
         mv -f /tmp/https-default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
         sed -i "s|_SSL_CERT_FILE_|$SSL_CERT_FILE|g"  `grep _SSL_CERT_FILE_ -rl /etc/apache2/sites-enabled`
