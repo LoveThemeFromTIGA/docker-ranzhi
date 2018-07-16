@@ -32,8 +32,8 @@ fi
 service mysql restart
 
 # config apache2
-echo "Config apache2..."
 if [ ! -f "$RANZHI_FLAG_FILE" ]; then
+    echo "config apache2..."
     if [ "$IS_HTTPS"="YES" ]; then
         mv -f /tmp/https-000-default.conf /etc/apache2/sites-enabled/000-default.conf
         mv -f /tmp/https-default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
@@ -44,6 +44,7 @@ if [ ! -f "$RANZHI_FLAG_FILE" ]; then
     else
         mv -f /tmp/http-000-default.conf /etc/apache2/sites-enabled/000-default.conf
     fi
+    echo "config apache2...done!"
 fi
 
 if [ ! -f "$RANZHI_FLAG_FILE" ]; then
