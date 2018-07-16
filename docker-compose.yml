@@ -11,6 +11,9 @@ services:
                         - /home/ranzhi/service:/var/ranzhi
                         - /home/ranzhi/mysql:/var/lib/mysql
                 environment:
+                        - IS_HTTPS=YES
                         - MYSQL_ADMIN_USER=admin
                         - MYSQL_ADMIN_PASS=admin888
+                        - SSL_CERT_FILE=/etc/apache2/ssl/cert/oa.crt
+                        - SSL_CERT_KEY_FILE=/etc/apache2/ssl/private/oa.key
 

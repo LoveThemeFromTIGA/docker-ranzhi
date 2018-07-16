@@ -23,8 +23,6 @@ if [ ! -f "$MYSQL_FLAG_FILE" ]; then
     echo -e "DELETE FROM user WHERE NOT(host=\"localhost\" AND user=\"root\");" >> $MYSQL_INIT
     echo "CREATE USER '$MYSQL_ADMIN_USER'@'localhost' IDENTIFIED BY '$MYSQL_ADMIN_PASS';" >> $MYSQL_INIT
     echo "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_ADMIN_USER'@'localhost' WITH GRANT OPTION;" >> $MYSQL_INIT
-    echo "CREATE DATABASE ranzhi;" >> $MYSQL_INIT
-    echo "CREATE DATABASE zentao;" >> $MYSQL_INIT
     # Execute SQL
     mysql -uroot < $MYSQL_INIT
     echo $FLAG_INFO > $MYSQL_FLAG_FILE
@@ -32,6 +30,21 @@ if [ ! -f "$MYSQL_FLAG_FILE" ]; then
 fi
 
 service mysql restart
+
+# config apache2
+echo "Config apache2..."
+if [ ! -f "$RANZHI_FLAG_FILE" ]; then
+    if [ "$IS_HTTPS"="YES" ]; then
+        mv -f /tmp/https-000-default.conf /etc/apache2/sites-enabled/000-default.conf
+        mv -f /tmp/https-default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
+        sed -i "s|_SSL_CERT_FILE_|$SSL_CERT_FILE|g"  `grep _SSL_CERT_FILE_ -rl /etc/apache2/sites-enabled`
+        sed -i "s|_SSL_CERT_KEY_FILE_|$SSL_CERT_KEY_FILE|g"  `grep _SSL_CERT_KEY_FILE_ -rl /etc/apache2/sites-enabled`
+        a2enmod ssl
+        a2enmod rewrite
+    else
+        mv -f /tmp/http-000-default.conf /etc/apache2/sites-enabled/000-default.conf
+    fi
+fi
 
 if [ ! -f "$RANZHI_FLAG_FILE" ]; then
     # unzip ranzhi
@@ -50,6 +63,4 @@ if [ ! -f "$RANZHI_FLAG_FILE" ]; then
     echo $FLAG_INFO > $RANZHI_FLAG_FILE
 fi
 
-# Start apache2
-echo "Starting apache2..."
 /usr/sbin/apache2ctl -D FOREGROUND

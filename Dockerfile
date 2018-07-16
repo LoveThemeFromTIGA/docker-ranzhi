@@ -6,6 +6,7 @@ ARG RANZHI_URL=http://dl.cnezsoft.com/ranzhi/4.7/ranzhi.4.7.stable.zip
 ARG ZENTAO_URL=http://dl.cnezsoft.com/zentao/10.0/ZenTaoPMS.10.0.stable.zip
 ARG XUANXUAN_URL=http://dl.cnezsoft.com/xuanxuan/1.6/xuanxuan.ranzhi.1.6.0.zip
 
+ENV IS_HTTPS=NO
 ENV MYSQL_HOME=/var/lib/mysql
 ENV MYSQL_TEMP=/tmp/mysql
 ENV MYSQL_ADMIN_USER=admin
@@ -26,7 +27,9 @@ RUN mkdir -p $MYSQL_TEMP && \
     mv $MYSQL_HOME/* $MYSQL_TEMP
 
 # config apache2
-COPY 000-default.conf /etc/apache2/sites-enabled/
+COPY http-000-default.conf /tmp/
+COPY https-000-default.conf /tmp/
+COPY https-default-ssl.conf /tmp/
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # download source package
